@@ -13,6 +13,10 @@ void AudioClip::SetVolume(float volume)
 {
   sound->setVolume(volume);
 }
+void AudioClip::SetLoop(bool isLoop)
+{
+  sound->setLoop(isLoop);
+}
 
 AudioClip::~AudioClip()
 {

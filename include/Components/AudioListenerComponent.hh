@@ -17,4 +17,6 @@ public:
   void PlayOneShot(AudioClip& audioClip);
   void PlayOneShot(AudioClip& audioClip, float audioVolume);
   void Initialize() override;
+  void SetLoop(bool isLoop);
+  void SetAudioClip(AudioClip* audioClip);
 };

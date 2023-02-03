@@ -6,14 +6,25 @@
 #include "Components/AnimatorComponent.hh"
 #include "Components/AudioListenerComponent.hh"
 #include "Components/Entity.hh"
+#include "GUI/TextComponent.hh"
 #include "GUI/Button.hh"
 
 EntityManager entityManager;
 
-TextObject* textObj1{new TextObject(ASSETS_FONT_ARCADECLASSIC, 14, sf::Color::White, sf::Text::Bold)};
+//TextObject* textObj1{new TextObject(ASSETS_FONT_ARCADECLASSIC, 14, sf::Color::White, sf::Text::Bold)};
 
 sf::Clock* gameClock{new sf::Clock()};
 float deltaTime{};
+sf::Color renderColor{sf::Color()};
+/*enum GAME_STATE
+{
+  MAIN,
+  GAME,
+  WIN,
+  GAME_OVER
+};
+
+GAME_STATE gameState;*/
 
 uint32 flags{};
     //flags += b2Draw::e_aabbBit;
@@ -29,7 +40,50 @@ Game::Game()
   gravity = new b2Vec2(0.f, 0.f);
   world = new b2World(*gravity);
   drawPhysics = new DrawPhysics(window);
+  renderColor = sf::Color::White;
 
+  auto* audioMainTitle{&entityManager.AddEntity("main-audio")};
+  audioMainTitle->AddComponent<AudioListenerComponent>();
+  auto* audMainTitleComp = audioMainTitle->GetComponent<AudioListenerComponent>();
+  audMainTitleComp->SetAudioClip(new AudioClip(ASSETS_AUDIO_MAIN_MENU));
+  audMainTitleComp->SetLoop(true);
+  audMainTitleComp->Play();
+
+/**************************************SCENE_MAIN_MENU_STARTS********************************************/
+
+  //Cover image
+  auto* coverTree{&entityManager.AddEntity("cover")};
+  coverTree->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f, 800.f, 600.f, 1.f);
+  coverTree->AddComponent<SpriteComponent>("assets/cover.png", 0, 0);
+
+  //Title
+  auto* titleText{&entityManager.AddEntity("title")};
+  titleText->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f - 300.f, WINDOW_HEIGHT * 0.5f - 100.f, 1.f, 1.f, 1.f);
+  titleText->AddComponent<TextComponent>(ASSETS_FONT_ANCIENT, 60.f, sf::Color(255, 140, 0), sf::Style::None);
+  auto& tittleTextComp{*titleText->GetComponent<TextComponent>()};
+  tittleTextComp.SetTextStr("YGGDRASIL QUEST");
+
+  //Play button
+  auto* buttonPlay{&entityManager.AddEntity("btn_play")};
+  buttonPlay->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f - 50.f, WINDOW_HEIGHT * 0.5f, 100.f, 50.f, 1.f);
+  buttonPlay->AddComponent<Button>(0.f, sf::Color::White, sf::Color::Transparent, [=](){
+    std::cout << "start game" << std::endl;
+    //clean scene
+    coverTree->Destroy();
+    titleText->Destroy();
+    buttonPlay->Destroy();
+    audMainTitleComp->SetAudioClip(new AudioClip(ASSETS_AUDIO_GAMEPLAY));
+    audMainTitleComp->SetLoop(true);
+    renderColor = sf::Color::Black;
+    audMainTitleComp->Play();
+  });
+  auto& btnPlayComp{*buttonPlay->GetComponent<Button>()};
+  btnPlayComp.SetTexture("assets/GUI/button.png");
+  buttonPlay->AddComponent<TextComponent>(ASSETS_FONT_ARCADECLASSIC, 15.f, sf::Color::Yellow, sf::Style::Default);
+  auto& bntplayTxtComp = *buttonPlay->GetComponent<TextComponent>();
+  bntplayTxtComp.SetTextStr("Start");
+
+  /**************************************SCENE_DUNGEON_STARTS********************************************/
 
   contactEventManager = new ContactEventManager();
 }
@@ -45,7 +99,8 @@ void Game::Initialize()
   drawPhysics->SetFlags(flags);
   world->SetContactListener(contactEventManager);
 
-  textObj1->SetTextStr("Hello game engine");
+  //textObj1->SetTextStr("Hello game engine");
+  //entityManager
   MainLoop();
 }
 
@@ -84,9 +139,9 @@ void Game::MainLoop()
 
 void Game::Render()
 {
-  window->clear(sf::Color::Black);
+  window->clear(renderColor);
 
-  window->draw(*textObj1->GetText());
+  //window->draw(*textObj1->GetText());
   entityManager.Render(*window);
   if(debugPhysics)
   {

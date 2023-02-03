@@ -12,12 +12,12 @@ private:
   float borderSize;
   sf::Color fillColor;
   sf::Color borderColor;
-  TransformComponent& transform;
+  TransformComponent* transform;
   std::function<void()> onClickAction;
   bool clicked = false;
   sf::Texture texture{};
 public:
-  Button(TransformComponent& transform, float borderSize, sf::Color fillColor, sf::Color borderColor, std::function<void()> onClickAction);
+  Button(float borderSize, sf::Color fillColor, sf::Color borderColor, std::function<void()> onClickAction);
   ~Button();
   void OnClick();
   void Initialize() override;

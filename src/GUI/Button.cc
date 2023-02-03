@@ -1,8 +1,7 @@
 #include "GUI/Button.hh"
 
-Button::Button(TransformComponent& transform, float borderSize,
-sf::Color fillColor, sf::Color borderColor, std::function<void()> onClickAction):
-transform(transform)
+Button::Button(float borderSize,
+sf::Color fillColor, sf::Color borderColor, std::function<void()> onClickAction)
 {
   this->borderSize = borderSize;
   this->fillColor = fillColor;
@@ -26,10 +25,11 @@ void Button::SetTexture(std::string texturePath)
 
 void Button::Initialize()
 {
-  float posX{transform.GetPosition().x};
-  float posY{transform.GetPosition().y};
-  float width{transform.GetWidth()};
-  float height{transform.GetHeight()};
+  transform = owner->GetComponent<TransformComponent>();
+  float posX{transform->GetPosition().x};
+  float posY{transform->GetPosition().y};
+  float width{transform->GetWidth()};
+  float height{transform->GetHeight()};
 
   rectangleShape = sf::RectangleShape();
   rectangleShape.setPosition(posX, posY);

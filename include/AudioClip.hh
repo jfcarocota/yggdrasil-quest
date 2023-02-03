@@ -14,4 +14,5 @@ public:
 
   void Play(sf::SoundBuffer& buffer);
   void SetVolume(float volume);
+  void SetLoop(bool isLoop);
 };
