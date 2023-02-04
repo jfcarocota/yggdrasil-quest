@@ -11,8 +11,6 @@
 
 EntityManager entityManager;
 
-//TextObject* textObj1{new TextObject(ASSETS_FONT_ARCADECLASSIC, 14, sf::Color::White, sf::Text::Bold)};
-
 sf::Clock* gameClock{new sf::Clock()};
 float deltaTime{};
 sf::Color renderColor{sf::Color()};
@@ -32,6 +30,9 @@ uint32 flags{};
     //flags += b2Draw::e_centerOfMassBit;
     //flags += b2Draw::e_pairBit;
     //flags += b2Draw::e_jointBit;
+
+/**************************GAMEPLAY_ASSETS********************************/
+Entity* border{};
 
 Game::Game()
 {
@@ -76,6 +77,11 @@ Game::Game()
     audMainTitleComp->SetLoop(true);
     renderColor = sf::Color::Black;
     audMainTitleComp->Play();
+
+    //create scene 2
+    border = &entityManager.AddEntity("border");
+    border->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f, 96.f, 96.f, 9.f);
+    border->AddComponent<SpriteComponent>(ASSETS_SPRITES_UI, 0, 0);
   });
   auto& btnPlayComp{*buttonPlay->GetComponent<Button>()};
   btnPlayComp.SetTexture("assets/GUI/button.png");
@@ -99,8 +105,6 @@ void Game::Initialize()
   drawPhysics->SetFlags(flags);
   world->SetContactListener(contactEventManager);
 
-  //textObj1->SetTextStr("Hello game engine");
-  //entityManager
   MainLoop();
 }
 
@@ -141,7 +145,6 @@ void Game::Render()
 {
   window->clear(renderColor);
 
-  //window->draw(*textObj1->GetText());
   entityManager.Render(*window);
   if(debugPhysics)
   {
