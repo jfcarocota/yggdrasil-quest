@@ -117,6 +117,8 @@ Game::Game()
     btnDice->AddComponent<Button>(0.f, sf::Color::Transparent, sf::Color::Transparent, [=](){
       std::cout << "rolling dice" << std::endl;
       diceAniamtor->Play("rol");
+      int rol = 1 + (std::rand() % 20);
+      std::cout << rol << std::endl;
     });
 
     border = &entityManager.AddEntity("border");
