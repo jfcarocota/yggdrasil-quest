@@ -1,0 +1,10 @@
+{
+  "actor": "dice",
+  "animation-name": "rol",
+  "animation":{
+    "startFrame": 4,
+    "endFrame": 4,
+    "delay": 0.1,
+    "row": 2
+  }
+}
