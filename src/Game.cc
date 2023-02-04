@@ -25,6 +25,10 @@ enum GAME_STATE
 
 GAME_STATE gameState;
 
+float diceTimer{};
+float diceDelay{3.f};
+int rol{};
+
 uint32 flags{};
     //flags += b2Draw::e_aabbBit;
     //flags += b2Draw::e_shapeBit;
@@ -36,6 +40,8 @@ uint32 flags{};
 Entity* border{};
 Entity* walls{};
 Entity* btnDice{};
+
+AnimatorComponent* diceAnimator{};
 
 Game::Game()
 {
@@ -91,37 +97,37 @@ Game::Game()
     btnDice->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f + 300.f, WINDOW_HEIGHT * 0.5f + 230.f, 184.f, 198.2f, 0.5f);
     btnDice->AddComponent<SpriteComponent>(ASSETS_SPRITES_DICE, 0, 0);
     btnDice->AddComponent<AnimatorComponent>();
-    AnimatorComponent* diceAniamtor = btnDice->GetComponent<AnimatorComponent>();
-    diceAniamtor->AddAnimation("idle", AnimationClip("assets/animations/dice/idle.json"));
-    diceAniamtor->AddAnimation("1", AnimationClip("assets/animations/dice/1.json"));
-    diceAniamtor->AddAnimation("2", AnimationClip("assets/animations/dice/2.json"));
-    diceAniamtor->AddAnimation("3", AnimationClip("assets/animations/dice/3.json"));
-    diceAniamtor->AddAnimation("4", AnimationClip("assets/animations/dice/4.json"));
-    diceAniamtor->AddAnimation("5", AnimationClip("assets/animations/dice/5.json"));
-    diceAniamtor->AddAnimation("6", AnimationClip("assets/animations/dice/6.json"));
-    diceAniamtor->AddAnimation("7", AnimationClip("assets/animations/dice/7.json"));
-    diceAniamtor->AddAnimation("8", AnimationClip("assets/animations/dice/8.json"));
-    diceAniamtor->AddAnimation("9", AnimationClip("assets/animations/dice/9.json"));
-    diceAniamtor->AddAnimation("10", AnimationClip("assets/animations/dice/10.json"));
-    diceAniamtor->AddAnimation("11", AnimationClip("assets/animations/dice/11.json"));
-    diceAniamtor->AddAnimation("12", AnimationClip("assets/animations/dice/12.json"));
-    diceAniamtor->AddAnimation("13", AnimationClip("assets/animations/dice/13.json"));
-    diceAniamtor->AddAnimation("14", AnimationClip("assets/animations/dice/14.json"));
-    diceAniamtor->AddAnimation("15", AnimationClip("assets/animations/dice/15.json"));
-    diceAniamtor->AddAnimation("16", AnimationClip("assets/animations/dice/16.json"));
-    diceAniamtor->AddAnimation("17", AnimationClip("assets/animations/dice/17.json"));
-    diceAniamtor->AddAnimation("18", AnimationClip("assets/animations/dice/18.json"));
-    diceAniamtor->AddAnimation("19", AnimationClip("assets/animations/dice/19.json"));
-    diceAniamtor->AddAnimation("20", AnimationClip("assets/animations/dice/20.json"));
+    diceAnimator = btnDice->GetComponent<AnimatorComponent>();
+    diceAnimator->AddAnimation("idle", AnimationClip("assets/animations/dice/idle.json"));
+    diceAnimator->AddAnimation("1", AnimationClip("assets/animations/dice/1.json"));
+    diceAnimator->AddAnimation("2", AnimationClip("assets/animations/dice/2.json"));
+    diceAnimator->AddAnimation("3", AnimationClip("assets/animations/dice/3.json"));
+    diceAnimator->AddAnimation("4", AnimationClip("assets/animations/dice/4.json"));
+    diceAnimator->AddAnimation("5", AnimationClip("assets/animations/dice/5.json"));
+    diceAnimator->AddAnimation("6", AnimationClip("assets/animations/dice/6.json"));
+    diceAnimator->AddAnimation("7", AnimationClip("assets/animations/dice/7.json"));
+    diceAnimator->AddAnimation("8", AnimationClip("assets/animations/dice/8.json"));
+    diceAnimator->AddAnimation("9", AnimationClip("assets/animations/dice/9.json"));
+    diceAnimator->AddAnimation("10", AnimationClip("assets/animations/dice/10.json"));
+    diceAnimator->AddAnimation("11", AnimationClip("assets/animations/dice/11.json"));
+    diceAnimator->AddAnimation("12", AnimationClip("assets/animations/dice/12.json"));
+    diceAnimator->AddAnimation("13", AnimationClip("assets/animations/dice/13.json"));
+    diceAnimator->AddAnimation("14", AnimationClip("assets/animations/dice/14.json"));
+    diceAnimator->AddAnimation("15", AnimationClip("assets/animations/dice/15.json"));
+    diceAnimator->AddAnimation("16", AnimationClip("assets/animations/dice/16.json"));
+    diceAnimator->AddAnimation("17", AnimationClip("assets/animations/dice/17.json"));
+    diceAnimator->AddAnimation("18", AnimationClip("assets/animations/dice/18.json"));
+    diceAnimator->AddAnimation("19", AnimationClip("assets/animations/dice/19.json"));
+    diceAnimator->AddAnimation("20", AnimationClip("assets/animations/dice/20.json"));
 
-    diceAniamtor->AddAnimation("rol", AnimationClip("assets/animations/dice/rol.json"));
+    diceAnimator->AddAnimation("rol", AnimationClip("assets/animations/dice/rol.json"));
     btnDice->AddComponent<Button>(0.f, sf::Color::Transparent, sf::Color::Transparent, [=](){
       if(gameState == GAME_STATE::GAME)
       {
         gameState = GAME_STATE::ROLLING;
         std::cout << "rolling dice" << std::endl;
-        diceAniamtor->Play("rol");
-        int rol = 1 + (std::rand() % 20);
+        diceAnimator->Play("rol");
+        rol = 1 + (std::rand() % 20);
         std::cout << rol << std::endl;
       }
     });
@@ -169,6 +175,17 @@ void Game::Update()
   gameClock->restart();
 
   entityManager.Update(deltaTime);
+
+  if(gameState == GAME_STATE::ROLLING)
+  {
+    diceTimer += deltaTime;
+    if(diceTimer >= diceDelay)
+    {
+      gameState = GAME_STATE::GAME;
+      diceTimer = 0;
+      diceAnimator->Play(std::to_string(rol));
+    }
+  }
 }
 
 void Game::MainLoop()
