@@ -87,10 +87,36 @@ Game::Game()
     walls->AddComponent<SpriteComponent>(ASSETS_SPRITES_WALLS, 2, 1);
 
     btnDice = &entityManager.AddEntity("dice");
-    btnDice->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f + 300.f, WINDOW_HEIGHT * 0.5f + 230.f, 184.f, 184.f, 0.5f);
+    btnDice->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f + 300.f, WINDOW_HEIGHT * 0.5f + 230.f, 184.f, 198.2f, 0.5f);
     btnDice->AddComponent<SpriteComponent>(ASSETS_SPRITES_DICE, 0, 0);
+    btnDice->AddComponent<AnimatorComponent>();
+    AnimatorComponent* diceAniamtor = btnDice->GetComponent<AnimatorComponent>();
+    diceAniamtor->AddAnimation("idle", AnimationClip("assets/animations/dice/idle.json"));
+    diceAniamtor->AddAnimation("1", AnimationClip("assets/animations/dice/1.json"));
+    diceAniamtor->AddAnimation("2", AnimationClip("assets/animations/dice/2.json"));
+    diceAniamtor->AddAnimation("3", AnimationClip("assets/animations/dice/3.json"));
+    diceAniamtor->AddAnimation("4", AnimationClip("assets/animations/dice/4.json"));
+    diceAniamtor->AddAnimation("5", AnimationClip("assets/animations/dice/5.json"));
+    diceAniamtor->AddAnimation("6", AnimationClip("assets/animations/dice/6.json"));
+    diceAniamtor->AddAnimation("7", AnimationClip("assets/animations/dice/7.json"));
+    diceAniamtor->AddAnimation("8", AnimationClip("assets/animations/dice/8.json"));
+    diceAniamtor->AddAnimation("9", AnimationClip("assets/animations/dice/9.json"));
+    diceAniamtor->AddAnimation("10", AnimationClip("assets/animations/dice/10.json"));
+    diceAniamtor->AddAnimation("11", AnimationClip("assets/animations/dice/11.json"));
+    diceAniamtor->AddAnimation("12", AnimationClip("assets/animations/dice/12.json"));
+    diceAniamtor->AddAnimation("13", AnimationClip("assets/animations/dice/13.json"));
+    diceAniamtor->AddAnimation("14", AnimationClip("assets/animations/dice/14.json"));
+    diceAniamtor->AddAnimation("15", AnimationClip("assets/animations/dice/15.json"));
+    diceAniamtor->AddAnimation("16", AnimationClip("assets/animations/dice/16.json"));
+    diceAniamtor->AddAnimation("17", AnimationClip("assets/animations/dice/17.json"));
+    diceAniamtor->AddAnimation("18", AnimationClip("assets/animations/dice/18.json"));
+    diceAniamtor->AddAnimation("19", AnimationClip("assets/animations/dice/19.json"));
+    diceAniamtor->AddAnimation("20", AnimationClip("assets/animations/dice/20.json"));
+
+    diceAniamtor->AddAnimation("rol", AnimationClip("assets/animations/dice/rol.json"));
     btnDice->AddComponent<Button>(0.f, sf::Color::Transparent, sf::Color::Transparent, [=](){
-      std::cout << "roling dice" << std::endl;
+      std::cout << "rolling dice" << std::endl;
+      diceAniamtor->Play("rol");
     });
 
     border = &entityManager.AddEntity("border");
