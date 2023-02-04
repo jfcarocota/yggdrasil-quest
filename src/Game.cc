@@ -8,6 +8,8 @@
 #include "Components/Entity.hh"
 #include "GUI/TextComponent.hh"
 #include "GUI/Button.hh"
+#include<fstream>
+#include "json/json.h"
 
 EntityManager entityManager;
 
@@ -26,6 +28,10 @@ enum GAME_STATE
 
 GAME_STATE gameState;
 
+std::ifstream* reader{new std::ifstream()};
+Json::Value root{Json::Value()};
+unsigned int currentTask{};
+
 int health = 10;
 float diceTimer{};
 float diceDelay{1.f};
@@ -43,6 +49,7 @@ Entity* border{};
 Entity* walls{};
 Entity* btnDice{};
 Entity* dialog{};
+TextComponent* dialogText{};
 
 AnimatorComponent* diceAnimator{};
 
@@ -54,6 +61,8 @@ Game::Game()
   world = new b2World(*gravity);
   drawPhysics = new DrawPhysics(window);
   renderColor = sf::Color::White;
+  reader->open(ASSETS_DIALOGS_JSON);
+  *reader >> root;
 
   auto* audioMainTitle{&entityManager.AddEntity("main-audio")};
   audioMainTitle->AddComponent<AudioListenerComponent>();
@@ -98,8 +107,9 @@ Game::Game()
 
     dialog = &entityManager.AddEntity("dialog-text");
     dialog->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.2f, WINDOW_HEIGHT * 0.5f + 220.f, 1.f, 1.f, 1.f);
-    auto& dialogText = dialog->AddComponent<TextComponent>(ASSETS_FONT_ARCADECLASSIC, 20.f, sf::Color::White, sf::Style::None);
-    dialogText.SetTextStr("You entered to the dungon inside the forest");
+    dialogText = &dialog->AddComponent<TextComponent>(ASSETS_FONT_ANCIENT, 20.f, sf::Color::White, sf::Style::None);
+    auto tasksArray = root["tasks"];
+    dialogText->SetTextStr(tasksArray[currentTask]["dialog"].asString() );
 
     btnDice = &entityManager.AddEntity("dice");
     btnDice->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f + 300.f, WINDOW_HEIGHT * 0.5f + 230.f, 184.f, 198.2f, 0.5f);
@@ -139,7 +149,11 @@ Game::Game()
         std::cout << "rolling dice" << std::endl;
         diceAnimator->Play("rol");
         rol = 1 + (std::rand() % 20);
+        auto tasks = root["tasks"];
         std::cout << rol << std::endl;
+        currentTask = rol >= tasks[currentTask]["options"]["rol"].asInt() ?
+        currentTask = tasks[currentTask]["options"]["good"].asInt() :
+        currentTask = tasks[currentTask]["options"]["bad"].asInt();
       }
     });
 
@@ -194,7 +208,9 @@ void Game::Update()
     {
       gameState = GAME_STATE::GAME;
       diceTimer = 0;
+      auto tasks = root["tasks"];
       diceAnimator->Play(std::to_string(rol));
+      dialogText->SetTextStr(tasks[currentTask]["dialog"].asString() );
     }
   }
 }

@@ -1,10 +1,10 @@
 {
   "enemies":[
     {"name": "skeneleton", "sprite": "assets/enemies/skeleton.png", "defeat": 2},
-    {"name": "skeneleton", "sprite": "assets/enemies/draugr.png", "defeat": 5},
-    {"name": "skeneleton", "sprite": "assets/enemies/mimic.png", "defeat": 7},
-    {"name": "skeneleton", "sprite": "assets/enemies/devil.png", "defeat": 9},
-    {"name": "skeneleton", "sprite": "assets/enemies/shadow.png", "defeat": 12},
-    {"name": "skeneleton", "sprite": "assets/enemies/death.png", "defeat": 17}
+    {"name": "draugr", "sprite": "assets/enemies/draugr.png", "defeat": 5},
+    {"name": "mimic", "sprite": "assets/enemies/mimic.png", "defeat": 7},
+    {"name": "devil", "sprite": "assets/enemies/devil.png", "defeat": 9},
+    {"name": "shadow", "sprite": "assets/enemies/shadow.png", "defeat": 12},
+    {"name": "death", "sprite": "assets/enemies/death.png", "defeat": 17}
   ]
 }

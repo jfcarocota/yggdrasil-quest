@@ -3,11 +3,11 @@
     {
       "dialog": "You entered to the dungon inside the forest",
       "fight": false,
-      "options": [
-        {"task": 1, "rol": 2},
-        {"task": 2, "rol": 4},
-        {"task": 3, "rol": 6}
-      ]
+      "options": {
+        "rol": 6,
+        "good": 3,
+        "bad": 1
+      }
     },
     {
       "dialog": "You go forward and find a Skeleton",
