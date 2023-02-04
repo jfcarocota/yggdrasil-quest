@@ -4,6 +4,7 @@ const char* GAME_NAME{"Yggdrasil Quest"};
 const char* ASSETS_SPRITES{"assets/sprites.png"};
 const char* ASSETS_SPRITES_WALLS{"assets/dungeon_wall.png"};
 const char* ASSETS_SPRITES_FLOOR{"assets/dungeon_floor.png"};
+const char* ASSETS_SPRITES_DICE{"assets/dice.png"};
 const char* ASSETS_TILES{"assets/tiles.png"};
 const char* ASSETS_SPRITES_UI{"assets/GUI/UI_elements.png"};
 const char* ASSETS_SPRITES_BUTTON{"assets/GUI/button.png"};

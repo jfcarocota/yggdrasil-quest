@@ -26,6 +26,7 @@ void TextComponent::Initialize()
 {
   transform = owner->GetComponent<TransformComponent>();
   text.setPosition(transform->GetPosition() + sf::Vector2f(10.f, 10.f));
+  text.setOrigin(transform->GetWidth() / 2, transform->GetHeight() / 2);
 }
 
 void TextComponent::Render(sf::RenderWindow& window)

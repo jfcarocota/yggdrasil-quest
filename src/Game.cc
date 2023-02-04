@@ -14,7 +14,7 @@ EntityManager entityManager;
 sf::Clock* gameClock{new sf::Clock()};
 float deltaTime{};
 sf::Color renderColor{sf::Color()};
-/*enum GAME_STATE
+enum GAME_STATE
 {
   MAIN,
   GAME,
@@ -22,7 +22,7 @@ sf::Color renderColor{sf::Color()};
   GAME_OVER
 };
 
-GAME_STATE gameState;*/
+GAME_STATE gameState;
 
 uint32 flags{};
     //flags += b2Draw::e_aabbBit;
@@ -34,6 +34,7 @@ uint32 flags{};
 /**************************GAMEPLAY_ASSETS********************************/
 Entity* border{};
 Entity* walls{};
+Entity* btnDice{};
 
 Game::Game()
 {
@@ -82,12 +83,21 @@ Game::Game()
     //create scene 2
 
     walls = &entityManager.AddEntity("walls");
-    walls->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f, 160.f, 120.f, 2.66f);
+    walls->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f, 160.f, 120.f, 3.66f);
     walls->AddComponent<SpriteComponent>(ASSETS_SPRITES_WALLS, 2, 1);
+
+    btnDice = &entityManager.AddEntity("dice");
+    btnDice->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f + 300.f, WINDOW_HEIGHT * 0.5f + 230.f, 184.f, 184.f, 0.5f);
+    btnDice->AddComponent<SpriteComponent>(ASSETS_SPRITES_DICE, 0, 0);
+    btnDice->AddComponent<Button>(0.f, sf::Color::Transparent, sf::Color::Transparent, [=](){
+      std::cout << "roling dice" << std::endl;
+    });
 
     border = &entityManager.AddEntity("border");
     border->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f, 96.f, 96.f, 9.f);
     border->AddComponent<SpriteComponent>(ASSETS_SPRITES_UI, 0, 0);
+
+    gameState = GAME_STATE::GAME;
   });
   auto& btnPlayComp{*buttonPlay->GetComponent<Button>()};
   btnPlayComp.SetTexture("assets/GUI/button.png");

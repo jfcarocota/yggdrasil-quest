@@ -34,6 +34,7 @@ void Button::Initialize()
   rectangleShape = sf::RectangleShape();
   rectangleShape.setPosition(posX, posY);
   rectangleShape.setSize(sf::Vector2f(width, height));
+  rectangleShape.setOrigin(transform->GetWidth() / 2, transform->GetHeight() / 2);
   rectangleShape.setFillColor(fillColor);
   rectangleShape.setOutlineColor(borderColor);
   rectangleShape.setOutlineThickness(borderSize);
