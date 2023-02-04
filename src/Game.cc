@@ -26,7 +26,7 @@ enum GAME_STATE
 GAME_STATE gameState;
 
 float diceTimer{};
-float diceDelay{3.f};
+float diceDelay{1.f};
 int rol{};
 
 uint32 flags{};
@@ -40,6 +40,7 @@ uint32 flags{};
 Entity* border{};
 Entity* walls{};
 Entity* btnDice{};
+Entity* dialog{};
 
 AnimatorComponent* diceAnimator{};
 
@@ -93,9 +94,16 @@ Game::Game()
     walls->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f, 160.f, 120.f, 3.66f);
     walls->AddComponent<SpriteComponent>(ASSETS_SPRITES_WALLS, 2, 1);
 
+    dialog = &entityManager.AddEntity("dialog-text");
+    dialog->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.2f, WINDOW_HEIGHT * 0.5f + 220.f, 1.f, 1.f, 1.f);
+    auto& dialogText = dialog->AddComponent<TextComponent>(ASSETS_FONT_ARCADECLASSIC, 20.f, sf::Color::White, sf::Style::None);
+    dialogText.SetTextStr("You entered to the dungon inside the forest");
+
     btnDice = &entityManager.AddEntity("dice");
     btnDice->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f + 300.f, WINDOW_HEIGHT * 0.5f + 230.f, 184.f, 198.2f, 0.5f);
     btnDice->AddComponent<SpriteComponent>(ASSETS_SPRITES_DICE, 0, 0);
+    auto* diceAud = &btnDice->AddComponent<AudioListenerComponent>();
+    diceAud->SetAudioClip(new AudioClip("assets/audio/diceRol.ogg"));
     btnDice->AddComponent<AnimatorComponent>();
     diceAnimator = btnDice->GetComponent<AnimatorComponent>();
     diceAnimator->AddAnimation("idle", AnimationClip("assets/animations/dice/idle.json"));
@@ -124,6 +132,7 @@ Game::Game()
     btnDice->AddComponent<Button>(0.f, sf::Color::Transparent, sf::Color::Transparent, [=](){
       if(gameState == GAME_STATE::GAME)
       {
+        diceAud->Play();
         gameState = GAME_STATE::ROLLING;
         std::cout << "rolling dice" << std::endl;
         diceAnimator->Play("rol");
