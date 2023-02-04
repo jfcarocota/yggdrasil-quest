@@ -18,6 +18,7 @@ enum GAME_STATE
 {
   MAIN,
   GAME,
+  FIGHT,
   ROLLING,
   WIN,
   GAME_OVER
@@ -25,6 +26,7 @@ enum GAME_STATE
 
 GAME_STATE gameState;
 
+int health = 10;
 float diceTimer{};
 float diceDelay{1.f};
 int rol{};
