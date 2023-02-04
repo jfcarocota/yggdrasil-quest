@@ -33,6 +33,7 @@ uint32 flags{};
 
 /**************************GAMEPLAY_ASSETS********************************/
 Entity* border{};
+Entity* walls{};
 
 Game::Game()
 {
@@ -79,6 +80,11 @@ Game::Game()
     audMainTitleComp->Play();
 
     //create scene 2
+
+    walls = &entityManager.AddEntity("walls");
+    walls->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f, 160.f, 120.f, 2.66f);
+    walls->AddComponent<SpriteComponent>(ASSETS_SPRITES_WALLS, 2, 1);
+
     border = &entityManager.AddEntity("border");
     border->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f, 96.f, 96.f, 9.f);
     border->AddComponent<SpriteComponent>(ASSETS_SPRITES_UI, 0, 0);
