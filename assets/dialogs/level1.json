@@ -12,7 +12,7 @@
     {
       "dialog": "You go forward and find a Skeleton",
       "fight": true,
-      "nextTask": 2,
+      "nextTask": 3,
       "enemy": 0
     },
     {

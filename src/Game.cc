@@ -42,6 +42,7 @@ int health = 10;
 float diceTimer{};
 float diceDelay{1.f};
 int rol{};
+int currentEnemy{};
 
 uint32 flags{};
     //flags += b2Draw::e_aabbBit;
@@ -60,6 +61,8 @@ Entity* enemy{};
 TextComponent* dialogText{};
 AnimatorComponent* diceAnimator{};
 SpriteComponent* enemySprComp{};
+
+int enemyPower{};
 
 Game::Game()
 {
@@ -168,11 +171,27 @@ Game::Game()
         std::cout << "rolling dice" << std::endl;
         diceAnimator->Play("rol");
         rol = 1 + (std::rand() % 20);
-        auto tasks = root["tasks"];
         std::cout << rol << std::endl;
-        currentTask = rol >= tasks[currentTask]["options"]["rol"].asInt() ?
-        tasks[currentTask]["options"]["good"].asInt() :
-        tasks[currentTask]["options"]["bad"].asInt();
+        auto tasks = root["tasks"];
+        if(gameState == GAME_STATE::FIGHT)
+        {
+          enemyPower = enemiesRoot["enemies"][currentEnemy]["defeat"].asInt();
+          if(enemyPower < rol)
+          {
+            currentTask = tasks[currentTask]["nextTask"].asInt();
+          }
+          else
+          {
+            health--;
+            std::cout << "health: " << health << std::endl;
+          }
+        }
+        else
+        {
+          currentTask = rol >= tasks[currentTask]["options"]["rol"].asInt() ?
+          tasks[currentTask]["options"]["good"].asInt() :
+          tasks[currentTask]["options"]["bad"].asInt();
+        }
         gameState = GAME_STATE::ROLLING;
       }
     });
@@ -226,6 +245,10 @@ void Game::Update()
     diceTimer += deltaTime;
     if(diceTimer >= diceDelay)
     {
+      if(gameState == GAME_STATE::FIGHT)
+      {
+        enemySprComp->Hide(enemyPower < rol);
+      }
       gameState = GAME_STATE::GAME;
       diceTimer = 0;
       auto tasks = root["tasks"];
@@ -233,8 +256,8 @@ void Game::Update()
       dialogText->SetTextStr(tasks[currentTask]["dialog"].asString() );
       if(tasks[currentTask]["fight"].asBool())
       {
-        int enemyIndex{tasks[currentTask]["enemy"].asInt()};
-        const char* enemyName{enemiesRoot["enemies"][enemyIndex]["sprite"].asCString()};
+        currentEnemy = tasks[currentTask]["enemy"].asInt();
+        const char* enemyName{enemiesRoot["enemies"][currentEnemy]["sprite"].asCString()};
         enemySprComp->SetTexture(enemyName);
         enemySprComp->Hide(false);
         gameState = GAME_STATE::FIGHT;
