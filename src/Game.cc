@@ -43,6 +43,7 @@ float diceTimer{};
 float diceDelay{1.f};
 int rol{};
 int currentEnemy{};
+bool hideEnemy{true};
 
 uint32 flags{};
     //flags += b2Draw::e_aabbBit;
@@ -61,6 +62,7 @@ Entity* enemy{};
 TextComponent* dialogText{};
 AnimatorComponent* diceAnimator{};
 SpriteComponent* enemySprComp{};
+AudioListenerComponent* audMainTitleComp;
 
 int enemyPower{};
 
@@ -84,7 +86,7 @@ Game::Game()
 
   auto* audioMainTitle{&entityManager.AddEntity("main-audio")};
   audioMainTitle->AddComponent<AudioListenerComponent>();
-  auto* audMainTitleComp = audioMainTitle->GetComponent<AudioListenerComponent>();
+  audMainTitleComp = audioMainTitle->GetComponent<AudioListenerComponent>();
   audMainTitleComp->SetAudioClip(new AudioClip(ASSETS_AUDIO_MAIN_MENU));
   audMainTitleComp->SetLoop(true);
   audMainTitleComp->Play();
@@ -179,6 +181,7 @@ Game::Game()
           if(enemyPower < rol)
           {
             currentTask = tasks[currentTask]["nextTask"].asInt();
+            hideEnemy = true;
           }
           else
           {
@@ -245,10 +248,7 @@ void Game::Update()
     diceTimer += deltaTime;
     if(diceTimer >= diceDelay)
     {
-      if(gameState == GAME_STATE::FIGHT)
-      {
-        enemySprComp->Hide(enemyPower < rol);
-      }
+      enemySprComp->Hide(hideEnemy);
       gameState = GAME_STATE::GAME;
       diceTimer = 0;
       auto tasks = root["tasks"];
@@ -256,11 +256,19 @@ void Game::Update()
       dialogText->SetTextStr(tasks[currentTask]["dialog"].asString() );
       if(tasks[currentTask]["fight"].asBool())
       {
+        hideEnemy = false;
         currentEnemy = tasks[currentTask]["enemy"].asInt();
         const char* enemyName{enemiesRoot["enemies"][currentEnemy]["sprite"].asCString()};
         enemySprComp->SetTexture(enemyName);
-        enemySprComp->Hide(false);
+        enemySprComp->Hide(hideEnemy);
+        audMainTitleComp->SetAudioClip(new AudioClip(ASSETS_AUDIO_FIGHT));
+        audMainTitleComp->Play();
         gameState = GAME_STATE::FIGHT;
+      }
+      else
+      {
+        audMainTitleComp->SetAudioClip(new AudioClip(ASSETS_AUDIO_GAMEPLAY));
+        audMainTitleComp->Play();
       }
     }
   }

@@ -4,7 +4,7 @@
       "dialog": "You entered to the dungon inside the forest",
       "fight": false,
       "options": {
-        "rol": 18,
+        "rol": 10,
         "good": 2,
         "bad": 1
       }
@@ -12,25 +12,61 @@
     {
       "dialog": "You go forward and find a Skeleton",
       "fight": true,
-      "nextTask": 3,
+      "nextTask": 4,
       "enemy": 0
     },
     {
       "dialog": "You see a skeleton hidding in the mist\n and then it goes another place.",
       "fight": false,
       "options": {
-        "rol": 6,
-        "good": 3,
-        "bad": 1
+        "rol": 10,
+        "good": 4,
+        "bad": 3
       }
+    },
+    {
+      "dialog": "Walking on the road you fire a torch,\n just for notice a Draugr coming to you.",
+      "fight": true,
+      "nextTask": 4,
+      "enemy": 1
     },
     {
       "dialog": "After walikng many hours you see a chest.",
       "fight": false,
       "options": {
-        "rol": 6,
-        "good": 3,
-        "bad": 1
+        "rol": 12,
+        "good": 6,
+        "bad": 5
+      }
+    },
+    {
+      "dialog": "Try to open it, but it's a Mimic.",
+      "fight": true,
+      "nextTask": 8,
+      "enemy": 2
+    },
+    {
+      "dialog": "You See a tail moving over the chest.\n You use your sneak skills and ignore them",
+      "fight": false,
+      "options": {
+        "rol": 10,
+        "good": 8,
+        "bad": 7
+      }
+    },
+    {
+      "dialog": "The mist is desolving by a flying light,\n you walk near just for discover is a Devil",
+      "fight": true,
+      "nextTask": 8,
+      "enemy": 2
+    },
+    {
+      "dialog": "Sees a flying light, you decide use your bow.\n You botained the light of a Devil, the mist desapear.",
+      "fight": false,
+      "options": {
+        "rol": 10,
+        "good": 8,
+        "bad": 7
       }
     }
   ]

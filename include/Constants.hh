@@ -15,3 +15,4 @@ const char* ASSETS_FONT_ARCADECLASSIC{"assets/fonts/ARCADECLASSIC.ttf"};
 const char* ASSETS_FONT_ANCIENT{"assets/fonts/AncientModernTales.ttf"};
 const char* ASSETS_AUDIO_MAIN_MENU{"assets/audio/music/Blood Lord - Unwelcome Guests - 02 A Long Journey.ogg"};
 const char* ASSETS_AUDIO_GAMEPLAY{"assets/audio/music/Blood Lord - Unwelcome Guests - 08 An Ancient Relic.ogg"};
+const char* ASSETS_AUDIO_FIGHT{"assets/audio/music/Blood Lord - Unwelcome Guests - 09 The Lord Gives Chase.ogg"};
