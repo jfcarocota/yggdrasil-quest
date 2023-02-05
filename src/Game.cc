@@ -59,6 +59,7 @@ Entity* enemy{};
 
 TextComponent* dialogText{};
 AnimatorComponent* diceAnimator{};
+SpriteComponent* enemySprComp{};
 
 Game::Game()
 {
@@ -119,6 +120,11 @@ Game::Game()
     walls->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f, 160.f, 120.f, 3.66f);
     walls->AddComponent<SpriteComponent>(ASSETS_SPRITES_WALLS, 2, 1);
 
+    enemy = &entityManager.AddEntity("enemy");
+    enemy->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f, 160, 120, 2.3f);
+    enemySprComp =  &enemy->AddComponent<SpriteComponent>("assets/enemies/skeleton.png", 0, 0);
+    enemySprComp->Hide(true);
+
     dialog = &entityManager.AddEntity("dialog-text");
     dialog->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.2f, WINDOW_HEIGHT * 0.5f + 220.f, 1.f, 1.f, 1.f);
     dialogText = &dialog->AddComponent<TextComponent>(ASSETS_FONT_ANCIENT, 20.f, sf::Color::White, sf::Style::None);
@@ -159,7 +165,6 @@ Game::Game()
       if(gameState == GAME_STATE::GAME || gameState == GAME_STATE::FIGHT)
       {
         diceAud->Play();
-        gameState = GAME_STATE::ROLLING;
         std::cout << "rolling dice" << std::endl;
         diceAnimator->Play("rol");
         rol = 1 + (std::rand() % 20);
@@ -168,6 +173,7 @@ Game::Game()
         currentTask = rol >= tasks[currentTask]["options"]["rol"].asInt() ?
         tasks[currentTask]["options"]["good"].asInt() :
         tasks[currentTask]["options"]["bad"].asInt();
+        gameState = GAME_STATE::ROLLING;
       }
     });
 
@@ -229,10 +235,9 @@ void Game::Update()
       {
         int enemyIndex{tasks[currentTask]["enemy"].asInt()};
         const char* enemyName{enemiesRoot["enemies"][enemyIndex]["sprite"].asCString()};
+        enemySprComp->SetTexture(enemyName);
+        enemySprComp->Hide(false);
         gameState = GAME_STATE::FIGHT;
-        enemy = &entityManager.AddEntity("enemy");
-        enemy->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f, 160, 120, 2.3f);
-        enemy->AddComponent<SpriteComponent>(enemyName, 0, 0);
       }
     }
   }

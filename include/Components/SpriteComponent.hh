@@ -12,6 +12,7 @@ private:
   const char* textureUrl{};
   unsigned int col{}, row{};
   bool flipTexture{false};
+  bool hide{};
 public:
   SpriteComponent(const char* textureUrl, unsigned int col, unsigned int row);
   ~SpriteComponent();
@@ -22,4 +23,6 @@ public:
   sf::Vector2f GetOrigin() const;
   void RebindRectTexture(int col, int row, float width, float height);
   void Initialize() override;
+  void SetTexture(const char* textureUrl);
+  void Hide(bool hide);
 };

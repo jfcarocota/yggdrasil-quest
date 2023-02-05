@@ -38,7 +38,19 @@ void SpriteComponent::Update(float& deltaTime)
 
 void SpriteComponent::Render(sf::RenderWindow& window)
 {
-  window.draw(sprite);
+  if(!hide)
+  {
+    window.draw(sprite);
+  }
+}
+
+void SpriteComponent::SetTexture(const char* textureUrl)
+{
+  texture.loadFromFile(textureUrl);
+}
+void SpriteComponent::Hide(bool hide)
+{
+  this->hide = hide;
 }
 
 void SpriteComponent::SetFlipTexture(bool flipTexture)
