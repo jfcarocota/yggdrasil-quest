@@ -1,6 +1,7 @@
 {
   "tasks":[
     {
+      "index": 0,
       "dialog": "You entered to the dungon inside the forest",
       "fight": false,
       "options": {
@@ -10,12 +11,14 @@
       }
     },
     {
+      "index": 1,
       "dialog": "You go forward and find a Skeleton",
       "fight": true,
       "nextTask": 4,
       "enemy": 0
     },
     {
+      "index": 2,
       "dialog": "You see a skeleton hidding in the mist\n and then it goes another place.",
       "fight": false,
       "options": {
@@ -25,12 +28,14 @@
       }
     },
     {
+      "index": 3,
       "dialog": "Walking on the road you fire a torch,\n just for notice a Draugr coming to you.",
       "fight": true,
       "nextTask": 4,
       "enemy": 1
     },
     {
+      "index": 4,
       "dialog": "After walikng many hours you see a chest.",
       "fight": false,
       "options": {
@@ -40,34 +45,67 @@
       }
     },
     {
+      "index": 5,
       "dialog": "Try to open it, but it's a Mimic.",
       "fight": true,
       "nextTask": 8,
       "enemy": 2
     },
     {
+      "index": 6,
       "dialog": "You See a tail moving over the chest.\n You use your sneak skills and ignore them",
       "fight": false,
       "options": {
-        "rol": 10,
+        "rol": 12,
         "good": 8,
         "bad": 7
       }
     },
     {
+      "index": 7,
       "dialog": "The mist is desolving by a flying light,\n you walk near just for discover is a Devil",
       "fight": true,
-      "nextTask": 8,
-      "enemy": 2
+      "nextTask": 10,
+      "enemy": 3
     },
     {
+      "index": 8,
       "dialog": "Sees a flying light, you decide use your bow.\n You botained the light of a Devil, the mist desapear.",
       "fight": false,
       "options": {
-        "rol": 10,
-        "good": 8,
-        "bad": 7
+        "rol": 13,
+        "good": 10,
+        "bad": 9
       }
+    },
+    {
+      "index": 9,
+      "dialog": "You se you shadow moving when you are not moving.\n A Shadow attack.",
+      "fight": true,
+      "nextTask": 11,
+      "enemy": 4
+    },
+    {
+      "index": 10,
+      "dialog": "Use your Devil light for lighting all the dungeon.\n You se Shadow vanishing.",
+      "fight": false,
+      "options": {
+        "rol": 18,
+        "good": 12,
+        "bad": 11
+      }
+    },
+    {
+      "index": 11,
+      "dialog": "After walking you see the end of the dungeon,\n runs at the gate but the Dungeon Keeper appers",
+      "fight": true,
+      "nextTask": 12,
+      "enemy": 5
+    },
+    {
+      "index": 12,
+      "dialog": "You scape from the dungeon and get the Yggdrasill's Slivers",
+      "fight": false
     }
   ]
 }

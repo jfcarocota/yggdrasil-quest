@@ -5,6 +5,6 @@
     {"name": "mimic", "sprite": "assets/enemies/mimic.png", "defeat": 7},
     {"name": "devil", "sprite": "assets/enemies/devil.png", "defeat": 9},
     {"name": "shadow", "sprite": "assets/enemies/shadow.png", "defeat": 12},
-    {"name": "death", "sprite": "assets/enemies/death.png", "defeat": 17}
+    {"name": "death", "sprite": "assets/enemies/death.png", "defeat": 15}
   ]
 }
