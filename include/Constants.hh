@@ -6,7 +6,7 @@ const char* ASSETS_SPRITES_WALLS{"assets/dungeon_wall.png"};
 const char* ASSETS_SPRITES_FLOOR{"assets/dungeon_floor.png"};
 const char* ASSETS_SPRITES_DICE{"assets/dice.png"};
 const char* ASSETS_DIALOGS_JSON{"assets/dialogs/level1.json"};
-const char* ASSETS_ENEMIS_JSON{"assets/dialogs/enemies.json"};
+const char* ASSETS_ENEMIES_JSON{"assets/dialogs/enemies.json"};
 const char* ASSETS_TILES{"assets/tiles.png"};
 const char* ASSETS_SPRITES_UI{"assets/GUI/UI_elements.png"};
 const char* ASSETS_SPRITES_BUTTON{"assets/GUI/button.png"};

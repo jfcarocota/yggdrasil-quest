@@ -4,38 +4,34 @@
       "dialog": "You entered to the dungon inside the forest",
       "fight": false,
       "options": {
-        "rol": 6,
-        "good": 3,
+        "rol": 8,
+        "good": 2,
         "bad": 1
       }
     },
     {
       "dialog": "You go forward and find a Skeleton",
       "fight": true,
-      "nextTask": 5
+      "nextTask": 5,
+      "enemy": 0
     },
     {
-      "dialog": "You step at the mist but see nothing... a Skeleton appears",
-      "fight": true,
-      "nextTask": 5
-    },
-    {
-      "dialog": "You see a skeleton hidding in the mist and then it goes another place.",
+      "dialog": "You see a skeleton hidding in the mist\n and then it goes another place.",
       "fight": false,
-      "options": [
-        {"task": 1, "rol": 2},
-        {"task": 2, "rol": 4},
-        {"task": 3, "rol": 6}
-      ]
+      "options": {
+        "rol": 6,
+        "good": 3,
+        "bad": 1
+      }
     },
     {
       "dialog": "After walikng many hours you see a chest.",
       "fight": false,
-      "options": [
-        {"task": 1, "rol": 2},
-        {"task": 2, "rol": 4},
-        {"task": 3, "rol": 6}
-      ]
+      "options": {
+        "rol": 6,
+        "good": 3,
+        "bad": 1
+      }
     }
   ]
 }

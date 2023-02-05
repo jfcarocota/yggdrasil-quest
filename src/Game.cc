@@ -28,9 +28,15 @@ enum GAME_STATE
 
 GAME_STATE gameState;
 
+/********readers********/
 std::ifstream* reader{new std::ifstream()};
 Json::Value root{Json::Value()};
 unsigned int currentTask{};
+
+std::ifstream* enemiesReader{new std::ifstream()};
+Json::Value enemiesRoot{Json::Value()};
+/********readers********/
+
 
 int health = 10;
 float diceTimer{};
@@ -49,8 +55,9 @@ Entity* border{};
 Entity* walls{};
 Entity* btnDice{};
 Entity* dialog{};
-TextComponent* dialogText{};
+Entity* enemy{};
 
+TextComponent* dialogText{};
 AnimatorComponent* diceAnimator{};
 
 Game::Game()
@@ -61,8 +68,15 @@ Game::Game()
   world = new b2World(*gravity);
   drawPhysics = new DrawPhysics(window);
   renderColor = sf::Color::White;
+
+  /*********readers loading*************/
   reader->open(ASSETS_DIALOGS_JSON);
   *reader >> root;
+
+  enemiesReader->open(ASSETS_ENEMIES_JSON);
+  *enemiesReader >> enemiesRoot;
+  /*********readers loading*************/
+
 
   auto* audioMainTitle{&entityManager.AddEntity("main-audio")};
   audioMainTitle->AddComponent<AudioListenerComponent>();
@@ -109,7 +123,7 @@ Game::Game()
     dialog->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.2f, WINDOW_HEIGHT * 0.5f + 220.f, 1.f, 1.f, 1.f);
     dialogText = &dialog->AddComponent<TextComponent>(ASSETS_FONT_ANCIENT, 20.f, sf::Color::White, sf::Style::None);
     auto tasksArray = root["tasks"];
-    dialogText->SetTextStr(tasksArray[currentTask]["dialog"].asString() );
+    dialogText->SetTextStr(tasksArray[currentTask]["dialog"].asString());
 
     btnDice = &entityManager.AddEntity("dice");
     btnDice->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f + 300.f, WINDOW_HEIGHT * 0.5f + 230.f, 184.f, 198.2f, 0.5f);
@@ -142,7 +156,7 @@ Game::Game()
 
     diceAnimator->AddAnimation("rol", AnimationClip("assets/animations/dice/rol.json"));
     btnDice->AddComponent<Button>(0.f, sf::Color::Transparent, sf::Color::Transparent, [=](){
-      if(gameState == GAME_STATE::GAME)
+      if(gameState == GAME_STATE::GAME || gameState == GAME_STATE::FIGHT)
       {
         diceAud->Play();
         gameState = GAME_STATE::ROLLING;
@@ -152,8 +166,8 @@ Game::Game()
         auto tasks = root["tasks"];
         std::cout << rol << std::endl;
         currentTask = rol >= tasks[currentTask]["options"]["rol"].asInt() ?
-        currentTask = tasks[currentTask]["options"]["good"].asInt() :
-        currentTask = tasks[currentTask]["options"]["bad"].asInt();
+        tasks[currentTask]["options"]["good"].asInt() :
+        tasks[currentTask]["options"]["bad"].asInt();
       }
     });
 
@@ -211,6 +225,15 @@ void Game::Update()
       auto tasks = root["tasks"];
       diceAnimator->Play(std::to_string(rol));
       dialogText->SetTextStr(tasks[currentTask]["dialog"].asString() );
+      if(tasks[currentTask]["fight"].asBool())
+      {
+        int enemyIndex{tasks[currentTask]["enemy"].asInt()};
+        const char* enemyName{enemiesRoot["enemies"][enemyIndex]["sprite"].asCString()};
+        gameState = GAME_STATE::FIGHT;
+        enemy = &entityManager.AddEntity("enemy");
+        enemy->AddComponent<TransformComponent>(WINDOW_WIDTH * 0.5f, WINDOW_HEIGHT * 0.5f, 160, 120, 2.3f);
+        enemy->AddComponent<SpriteComponent>(enemyName, 0, 0);
+      }
     }
   }
 }
